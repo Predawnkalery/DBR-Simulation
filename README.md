@@ -97,11 +97,11 @@ This tool was developed as part of an academic research and design project.
 - **Contributors:**
     
     - [Kriti Garg - IITD EE'26](https://github.com/Predawnkalery)
-    - [Ishaan Lakhotiya - IITD EE'26](https://github.com/Predawnkalery/DBR-Simulation-Suite/tree/main)
+    - [Ishaan Lakhotiya - IITD EE'26]
         
-- **Supervising Professor:** Prof. [Santanu Manna](https://github.com/Predawnkalery/DBR-Simulation-Suite/tree/main)
+- **Supervising Professor:** Prof. [Santanu Manna]
     
-- **Institution:** [Department of Electrical Engineering, IIT Delhi](https://github.com/Predawnkalery/DBR-Simulation-Suite/tree/main)
+- **Institution:** [Department of Electrical Engineering, IIT Delhi]
     
 
 _Special thanks to Mikhail Polyanskiy for maintaining the open-source [RefractiveIndex.INFO database](https://refractiveindex.info/)._

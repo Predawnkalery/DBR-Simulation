@@ -31,7 +31,8 @@ lab_db_path = os.path.join(EXTERNAL_DIR, 'lab_materials.yml')
 
 def sync_with_github():
     print("🔄 Checking GitHub for updated lab materials...")
-    repo_url_base = "https://raw.githubusercontent.com/Predawnkalery/DBR-Simulation-Suite/offline/"
+    # repo_url_base = "https://raw.githubusercontent.com/Predawnkalery/DBR-Simulation-Suite/offline/"
+    repo_url_base = "https://raw.githubusercontent.com/Predawnkalery/DBR-Simulation/refs/heads/main/"
     try:
         urllib.request.urlretrieve(repo_url_base + "formulas.yml", formulas_path)
         urllib.request.urlretrieve(repo_url_base + "lab_materials.yml", lab_db_path)
@@ -39,6 +40,7 @@ def sync_with_github():
     except Exception as e:
         print(f"⚠️ Offline or sync failed. Using local materials. ({e})")
 
+# COMMENT OUT THIS LINE TO DISABLE THE INTERNET CHECK AND ALWAYS USE LOCAL FILES (EVEN IF OUTDATED)
 sync_with_github()
 
 # --- LOAD LAB DATABASES ---
