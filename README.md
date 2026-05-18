@@ -18,71 +18,97 @@ Direct web access available at our primary URL https://dbr-simulation-suite.onre
 * **Workflow Optimisations:** Features a "Swap Material" toggle and a browser-cached "Pin to Top" favourites list for frequently used materials.
 
 ## 🛠️ Tech Stack
-* **Backend:** Python, Flask, NumPy
+* **Backend:** Python, Flask, NumPy, Waitress
 * **Frontend:** HTML5, CSS3, Vanilla JavaScript
 * **Libraries/APIs:** `js-yaml` (parsing), `Chart.js` & `chartjs-plugin-zoom` (plotting), `refractiveindex` (database wrapper)
 
+## 💻 Developer Guide
 
-## 🚀 Installation & Local Setup 
-### Using local Package 
+This section is for developers who want to clone, build, or modify the DBR Simulation Suite.
 
-The standard workflow for a researcher receiving your ZIP file would look like this:
+### 1. Set Up the Virtual Environment
+It is highly recommended to use a virtual environment to isolate the project dependencies.
 
-1. Unzip the folder.
-2. Open terminal and run: `python -m venv venv`
-3. Activate it: `source venv/bin/activate` (Mac/Linux) or `venv\Scripts\activate` (Windows)
-4. Install libraries: `pip install -r requirements.txt`
-5. Run the app: `python server.py` (This is the step where your new script silently unpacks the database bundle).
+**For Mac/Linux:**
+```bash 
+python3 -m venv venv 
+source venv/bin/activate 
+pip install -r requirements.txt
+````
 
-### Using github repo
+**For Windows:**
 
-**1. Clone the repository:**
-```bash
-git clone https://github.com/Predawnkalery/DBR-Simulation-Suite.git
-cd DBR-Simulation-Suite
+Bash
+
 ```
-
-**2. Set up a virtual environment (Recommended):**
-* Mac/Linux: `python3 -m venv venv && source venv/bin/activate`
-* Windows: `python -m venv venv && venv\Scripts\activate`
-
-**3. Install dependencies:**
-```bash
+python -m venv venv
+venv\\Scripts\\activate
 pip install -r requirements.txt
 ```
 
-**4. Run the development server:**
-Before running the dev server, ensure uncommenting the last line of code in server.py
-```bash
+### 2. Fetch Offline Assets and Databases
+
+This application is designed to be fully functional in air-gapped lab environments. Before running the server for the first time, you must download the required frontend JavaScript libraries and the master refractive index database catalog.
+
+Run the offline setup script:
+
+Bash
+
+```
+python make_offline.py
+```
+
+_Note: This script will automatically populate the `static/js/` and `static/data/` directories and download the `database_bundle.zip`._
+
+### 3. Running the Application (Architecture Differences)
+
+This project features two different entry points depending on your workflow:
+
+**For Development & Debugging (`server.py`)**
+
+When actively editing the codebase, run the raw Flask server. This bypasses the browser-automation wrapper, allowing you to see full Python tracebacks in the terminal and utilize standard web development tools.
+
+Bash
+
+```
 python server.py
 ```
-*Navigate to `http://127.0.0.1:5000` in your web browser.*
 
-## 📂 Project Structure
-```text
-/
-├── server.py              # Main Flask backend and TMM logic
-├── requirements.txt       # Python dependencies
-├── README.md              # Project documentation
-└── /templates             # UI Views
-     ├── home.html         # Landing page / Mode selector
-     ├── single.html       # Single DBR interface
-     └── double.html       # VCSEL Cavity interface
+_Access via standard browser at: `http://127.0.0.1:5000`_
+
+**For Production Testing (`desktop_app.py`)**
+
+When testing the final user experience, use the desktop wrapper. This script spins up a robust `Waitress` production server on a background thread and automatically launches the user's default web browser. It is designed to keep the engine alive reliably during heavy matrix simulations without dropping the connection.
+
+Bash
+
 ```
+python desktop_app.py
+```
+
+_Automatically opens in default browser at: `http://127.0.0.1:8085`_
+
+---
 
 ## 🎓 Team & Acknowledgements
 
 This tool was developed as part of an academic research and design project.
 
-* **Contributors:**
-  * [Kriti Garg - IITD EE'26](https://github.com/Predawnkalery)
-  * [Ishaan Lakhotiya - IITD EE'26](https://github.com/Predawnkalery/DBR-Simulation-Suite/tree/main)
-* **Supervising Professor:** Prof. [Santanu Manna](https://github.com/Predawnkalery/DBR-Simulation-Suite/tree/main)
-* **Institution:** [Department of Electrical Engineering, IIT Delhi](https://github.com/Predawnkalery/DBR-Simulation-Suite/tree/main)
+- **Contributors:**
+    
+    - [Kriti Garg - IITD EE'26](https://github.com/Predawnkalery)
+    - [Ishaan Lakhotiya - IITD EE'26](https://github.com/Predawnkalery/DBR-Simulation-Suite/tree/main)
+        
+- **Supervising Professor:** Prof. [Santanu Manna](https://github.com/Predawnkalery/DBR-Simulation-Suite/tree/main)
+    
+- **Institution:** [Department of Electrical Engineering, IIT Delhi](https://github.com/Predawnkalery/DBR-Simulation-Suite/tree/main)
+    
 
-*Special thanks to Mikhail Polyanskiy for maintaining the open-source [RefractiveIndex.INFO database](https://refractiveindex.info/).*
+_Special thanks to Mikhail Polyanskiy for maintaining the open-source [RefractiveIndex.INFO database](https://refractiveindex.info/)._
 
 ## 📄 License
+
 **All Rights Reserved**
 
 This software is currently proprietary and closed-source. It was developed for internal research and design purposes. Unauthorised copying, distribution, modification, or commercial use of this codebase is strictly prohibited without explicit written permission from the contributing authors and the supervising professor.
+
