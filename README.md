@@ -4,7 +4,6 @@ A full-stack physics simulation web application designed to calculate and visual
 
 This tool integrates directly with the public `refractiveindex.info` database to extract real-world optical constants ($n$, $k$) and utilises a custom Python-based Transfer Matrix Method (TMM) engine for precise optical modelling.
 
-Direct web access available at our primary URL https://dbr-simulation-suite.onrender.com
 
 ## ✨ Key Features
 
