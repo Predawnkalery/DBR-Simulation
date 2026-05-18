@@ -1,0 +1,10 @@
+# formulas.yml
+
+cauchy_standard: "A + B / (wl_um**2) + C / (wl_um**4)"
+
+sellmeier_1_term: "sqrt(1 + (B1 * wl_um**2) / (wl_um**2 - C1))"
+
+sellmeier_2_term: "sqrt(1 + (B1 * wl_um**2) / (wl_um**2 - C1) + (B2 * wl_um**2) / (wl_um**2 - C2))"
+
+# Wavelength in nm used here instead of micrometers
+linear_dispersion: "n0 + dn_dwl * wl"

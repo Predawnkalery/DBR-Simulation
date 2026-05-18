@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DBR Simulation Suite</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 3rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; max-width: 500px; }
+        h1 { color: #2c3e50; margin-bottom: 2rem; }
+        .btn { display: block; width: 100%; padding: 15px; margin: 10px 0; background: #007bff; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 1.1rem; transition: background 0.3s; }
+        .btn:hover { background: #0056b3; }
+        .btn-secondary { background: #6c757d; }
+        .btn-secondary:hover { background: #545b62; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>DBR Simulation Suite</h1>
+        <p>Select a simulation mode:</p>
+        <a href="/single" class="btn">Single DBR Stack</a>
+        <a href="/double" class="btn btn-secondary">Double DBR Stack (Cavity)</a>
+    </div>
+<script>
+    // Preserve the flaskwebgui security token during navigation
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Only intercept local links if we currently have a token
+                if (link.hostname === window.location.hostname && window.location.search) {
+                    e.preventDefault();
+                    window.location.href = link.pathname + window.location.search;
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

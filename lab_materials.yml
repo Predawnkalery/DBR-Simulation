@@ -1,0 +1,24 @@
+# lab_materials.yml
+materials:
+  - name: "Lab PECVD Oxide"
+    type: "formula"
+    formula_id: "cauchy_standard"  # <-- Points to formulas.yml
+    coefficients:
+      A: 1.4580
+      B: 0.00354
+      C: 0.0
+
+  - name: "Custom SiNx Fit"
+    type: "formula"
+    formula_id: "sellmeier_1_term" # <-- Points to formulas.yml
+    coefficients:
+      B1: 2.8939
+      C1: 0.0195
+
+  - name: "Spin-Coated TiO2 (Sample A)"
+    type: "tabulated"
+    # Tabulated data doesn't need a formula_id, it just interpolates the raw data
+    data:
+      - [400, 2.510, 0.002]
+      - [500, 2.450, 0.000]
+      - [600, 2.390, 0.000]
