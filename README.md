@@ -98,7 +98,7 @@ This script utilizes `PyInstaller` to bundle the Python environment, the offline
 ```bash
 python build_app.py
 
-***
+```
 
 ### Why this is the best approach
 By keeping them separate in the documentation, a future student taking over this project will instantly understand the workflow:
