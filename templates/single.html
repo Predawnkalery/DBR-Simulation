@@ -338,7 +338,16 @@
 
         fetch('/process' + window.location.search, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) })
         .then(r=>r.json()).then(data => {
-            if(data.status === 'error') { alert("Simulation Error: " + data.message); return; }
+            
+            // --- NEW: ADVANCED ERROR CATCHER ---
+            if(data.status === 'error') { 
+                alert(`⚠️ SIMULATION ERROR:\n${data.message}\n\nPlease take a screenshot and report this issue.`);
+                if (data.traceback) {
+                    console.error("Developer Traceback:", data.traceback);
+                }
+                return; // Stop running the rest of the code
+            }
+            // -----------------------------------
 
             document.getElementById('results').style.display = 'block';
 
@@ -369,9 +378,10 @@
             }
         })
         .catch(err => {
-            alert("A network or parsing error occurred: " + err.message);
+            // --- NEW: FATAL NETWORK CRASH CATCHER ---
+            alert(`🔌 CONNECTION LOST OR FATAL CRASH:\nThe engine stopped responding. Did you accidentally close the black terminal window?\n\nDetails: ${err.message}`);
             console.error(err);
-        }); 
+        });
     }
 
     function val(obj, k) { return (obj && !obj.error) ? (typeof obj[k] === 'number' ? obj[k].toFixed(4) : obj[k]) : '-'; }
