@@ -8,6 +8,22 @@ import zipfile
 import shutil
 import urllib.request
 
+import sys
+
+# --- SAFE LOGGER ---
+def safe_print(message):
+    try:
+        # Only attempt to print if stdout hasn't been detached by PyInstaller
+        if sys.stdout is not None:
+            print(message)
+            # Force the terminal to render the text immediately (bypass Waitress buffering)
+            sys.stdout.flush() 
+    except Exception:
+        pass # Silently ignore the print if the console is hidden
+
+
+
+
 # --- PATH RESOLUTION ---
 if getattr(sys, 'frozen', False):
     BASE_DIR = sys._MEIPASS
@@ -28,6 +44,24 @@ app = Flask(__name__,
 # --- AUTO-UPDATER FOR LAB DATA ---
 formulas_path = os.path.join(EXTERNAL_DIR, 'formulas.yml')
 lab_db_path = os.path.join(EXTERNAL_DIR, 'lab_materials.yml')
+
+import traceback
+
+# --- GLOBAL ERROR HANDLER ---
+@app.errorhandler(Exception)
+def handle_global_error(e):
+    # Grab the exact line of code and technical reason it crashed
+    error_trace = traceback.format_exc()
+    
+    # Print it to the background terminal just in case
+    print(f"\n[CRITICAL BACKEND ERROR]:\n{error_trace}\n")
+    
+    # Send a clean JSON package to the frontend so it doesn't just say "Failed to fetch"
+    return jsonify({
+        "status": "error",
+        "message": f"An unexpected system error occurred: {str(e)}",
+        "traceback": error_trace # This gives you the technical data if they report it
+    }), 500
 
 def sync_with_github():
     print("🔄 Checking GitHub for updated lab materials...")
@@ -219,19 +253,20 @@ def get_material_data(mat_data, wavelength):
         else:
             book, page = mat_data['book'], mat_data['page']
             if not USE_MOCK:
+                safe_print(f"Fetching material from RefractiveIndex database:{shelf} - {book} - {page}")
                 mat = RefractiveIndexMaterial(shelf, book, page)
             else:
                 mat = MockMaterial(shelf, book, page)
             name = f"{book}-{page}"
-        
+        safe_print(f"Calculate optical properties for {name} at {wavelength} nm")
         # Calculate optical properties
         n = float(mat.get_refractive_index(wavelength))
         try: k = float(mat.get_extinction_coefficient(wavelength))
         except: k = 0.0
-        
+    
         if n > 0: t = wavelength / (4 * n)
         else: t = 0
-
+        safe_print(f"Calculated optical properties for {name} at {wavelength} nm -> n: {n}, k: {k}, t: {t} m")
         return {"name": name, "n": n, "k": k, "t": t}
     except Exception as e:
         return {"error": str(e)}
