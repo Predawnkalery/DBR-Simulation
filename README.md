@@ -87,6 +87,28 @@ python desktop_app.py
 
 _Automatically opens in default browser at: `http://127.0.0.1:8085`_
 
+### 4. Compiling the Standalone Application (`build_app.py`)
+
+If you want to package the entire suite into a single, double-clickable executable (a `.app` for macOS or `.exe` for Windows) to distribute to lab members, use the automated builder script. 
+
+This script utilizes `PyInstaller` to bundle the Python environment, the offline databases, and the Flask server into a standalone folder.
+
+**Before compiling, ensure you have run `make_offline.py` to fetch the necessary assets.**
+
+```bash
+python build_app.py
+
+***
+
+### Why this is the best approach
+By keeping them separate in the documentation, a future student taking over this project will instantly understand the workflow:
+1. Get the libraries (`pip install`).
+2. Get the databases (`make_offline.py`).
+3. Test the code (`server.py` / `desktop_app.py`).
+4. Package it for the team (`build_app.py`). 
+
+It completes the entire lifecycle of your software!
+
 ---
 
 ## 🎓 Team & Acknowledgements
